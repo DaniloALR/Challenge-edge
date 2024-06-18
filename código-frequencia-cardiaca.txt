@@ -1,0 +1,40 @@
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(13,12,11,10,9,8);
+
+int X;
+int Y;
+float Tempo;
+float frequencia;
+const int input = A0;
+
+void setup()
+{
+    pinMode(input,INPUT);                       //configura entrada
+    lcd.begin(16, 2);                           // Tamanho do display
+}
+void loop(){
+  
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Frequencia");
+    X=pulseIn(input,HIGH);                      //Recebe a duracao do sinal alto
+    Y=pulseIn(input,LOW);                       //Recebe a duracao do sinal baixo
+    Tempo = X+Y;
+    frequencia=1000000/Tempo;                   //Formula da freq= 1/tempo
+    if(frequencia<=0)
+    {
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("Frequencia");
+        lcd.setCursor(0,1);
+        lcd.print("0.00 Hz");
+    }
+    else
+    {
+        lcd.setCursor(0,1);
+        lcd.print(frequencia);
+        lcd.print(" Hz");
+    }
+    delay(1000);
+}
